@@ -1,4 +1,3 @@
-import 'package:app/main.dart';
 import 'package:flutter/material.dart';
 
 class MyHomePage extends StatefulWidget {
@@ -21,23 +20,17 @@ class _MyHomePageState extends State<MyHomePage> {
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: <Widget>[
 
-            // Personal account
+            // User widget
             GestureDetector(
               onTap: () {
-                // Handle container click
-                print('Container clicked!');
+                print('Container pressed');
               },
               child: Container(
                 width: MediaQuery.sizeOf(context).width * 0.90,
-                height: MediaQuery.sizeOf(context).height * 0.40,
+                height: MediaQuery.sizeOf(context).height * 0.50,
                 decoration: BoxDecoration(
                   color: Theme.of(context).primaryColor,
                   borderRadius: BorderRadius.circular(50.0),
-                ),
-                child: const Center(
-                  child: Text(
-                    'Click me!',
-                  ),
                 ),
               ),
             ),
@@ -47,9 +40,8 @@ class _MyHomePageState extends State<MyHomePage> {
               width: MediaQuery.sizeOf(context).width * 0.90,
               height: MediaQuery.sizeOf(context).height * 0.10,
               child: ElevatedButton(
-                onPressed: () {
-                // Add the functionality you want when the button is pressed
-                print('Button pressed!');
+                onPressed: () {  
+                  print('Host button pressed');
                 },
                 style: ElevatedButton.styleFrom(
                   shape: RoundedRectangleBorder(
@@ -66,8 +58,7 @@ class _MyHomePageState extends State<MyHomePage> {
               height: MediaQuery.sizeOf(context).height * 0.10,
               child: ElevatedButton(
                 onPressed: () {
-                // Add the functionality you want when the button is pressed
-                print('Button pressed!');
+                  print('Join button pressed');
                 },
                 style: ElevatedButton.styleFrom(
                   shape: RoundedRectangleBorder(
