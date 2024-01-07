@@ -1,3 +1,5 @@
+import 'dart:ffi';
+
 import 'package:flutter/material.dart';
 
 class MyHomePage extends StatefulWidget {
@@ -23,7 +25,7 @@ class _MyHomePageState extends State<MyHomePage> {
             // User widget
             GestureDetector(
               onTap: () {
-                print('Container pressed');
+                _showLoginPopup(context);
               },
               child: Container(
                 width: MediaQuery.sizeOf(context).width * 0.90,
@@ -71,6 +73,61 @@ class _MyHomePageState extends State<MyHomePage> {
           ],
         ),
       ),
+    );
+  }
+
+  void _showLoginPopup(BuildContext context) {
+    TextEditingController emailController = TextEditingController();
+    TextEditingController passwordController = TextEditingController();
+
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(50.0),
+          ),
+          title: const Text("Login"),
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+
+              // Email textfield
+              TextField(
+                controller: emailController,
+                decoration: const InputDecoration(labelText: 'Email'),
+                keyboardType: TextInputType.emailAddress,
+              ),
+
+              // Password textfield
+              TextField(
+                controller: passwordController,
+                decoration: const InputDecoration(labelText: 'Password'),
+                obscureText: true,
+              ),
+            ],
+          ),
+          actions: [
+
+            // Cancel button
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              child: const Text('Cancel'),
+            ),
+
+            // Login button
+            ElevatedButton(
+              onPressed: () {
+                print(emailController.text);
+                Navigator.of(context).pop();
+              },
+              child: const Text('Login'),
+            ),
+          ],
+        );
+      },
     );
   }
 }
