@@ -1,5 +1,5 @@
-import 'dart:ffi';
-
+import 'package:app/host_page.dart';
+import 'package:app/join_page.dart';
 import 'package:flutter/material.dart';
 
 class MyHomePage extends StatefulWidget {
@@ -43,7 +43,10 @@ class _MyHomePageState extends State<MyHomePage> {
               height: MediaQuery.sizeOf(context).height * 0.10,
               child: ElevatedButton(
                 onPressed: () {  
-                  print('Host button pressed');
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => const HostPage()),
+                  );
                 },
                 style: ElevatedButton.styleFrom(
                   shape: RoundedRectangleBorder(
@@ -60,7 +63,10 @@ class _MyHomePageState extends State<MyHomePage> {
               height: MediaQuery.sizeOf(context).height * 0.10,
               child: ElevatedButton(
                 onPressed: () {
-                  print('Join button pressed');
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => const JoinPage()),
+                  );
                 },
                 style: ElevatedButton.styleFrom(
                   shape: RoundedRectangleBorder(
