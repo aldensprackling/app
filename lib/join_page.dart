@@ -1,3 +1,4 @@
+import 'package:app/user_grid.dart';
 import 'package:flutter/material.dart';
 
 class JoinPage extends StatefulWidget {
@@ -14,6 +15,7 @@ class _JoinPageState extends State<JoinPage> {
       appBar: AppBar(
         title: const Text("Join Page"),
       ),
+      body: const UserGrid()
     );
   }
 }
