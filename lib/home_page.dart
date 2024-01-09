@@ -1,5 +1,7 @@
 import 'package:app/host_page.dart';
 import 'package:app/join_page.dart';
+import 'package:app/user_options.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 class MyHomePage extends StatefulWidget {
@@ -10,7 +12,6 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -25,7 +26,7 @@ class _MyHomePageState extends State<MyHomePage> {
             // User widget
             GestureDetector(
               onTap: () {
-                _showLoginPopup(context);
+                FirebaseAuth.instance.currentUser!.isAnonymous ? _showLoginPopup(context) : Container();
               },
               child: Container(
                 width: MediaQuery.sizeOf(context).width * 0.90,
@@ -126,7 +127,7 @@ class _MyHomePageState extends State<MyHomePage> {
             // Login button
             ElevatedButton(
               onPressed: () {
-                print(emailController.text);
+                UserOptions.linkAccountWithAnonymous(emailController.text, passwordController.text);
                 Navigator.of(context).pop();
               },
               child: const Text('Login'),
