@@ -1,7 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 
 class UserOptions {
-  static Future<void> linkAccountWithAnonymous(String email, String password) async {
+  static Future<void> linkAccountWithAnonymousUser(String email, String password) async {
     try {
       // Get the current user (should be the anonymous user)
       User? user = FirebaseAuth.instance.currentUser;
@@ -14,9 +14,14 @@ class UserOptions {
 
       // Link the anonymous user with the permanent account
       await user?.linkWithCredential(userCredential);
-    } catch (e) {
-      print('Error linking accounts: $e');
-      signInUser(email, password);
+    } on FirebaseAuthException catch (e) {
+      if (e.code == 'provider-already-linked' || e.code == 'email-already-in-use') {
+        // If account is already linked or in use, sign the user in
+        // try signing the user in
+        signInUser(email, password);
+      } else {
+        print(e);
+      }
     }
   }
 
@@ -26,19 +31,27 @@ class UserOptions {
         email: email,
         password: password
       );
+
       return userCredential;
     } on FirebaseAuthException catch (e) {
       if (e.code == 'user-not-found') {
         print('No user found for that email.');
       } else if (e.code == 'wrong-password') {
         print('Wrong password provided for that user.');
+      } else {
+        print (e);
       }
       return null;
     }
   }
 
   static Future<void> signOutUser() async {
-    await FirebaseAuth.instance.signOut();
+    try {
+      await FirebaseAuth.instance.signOut();
+      print("User is signed out.");
+    } on FirebaseAuthException catch (e) {
+      print(e);
+    }
   }
 
   // TODO: add reauthentication method

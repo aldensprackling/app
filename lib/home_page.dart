@@ -1,6 +1,7 @@
 import 'package:app/host_page.dart';
 import 'package:app/join_page.dart';
-import 'package:app/user_options.dart';
+import 'package:app/login_popup.dart';
+import 'package:app/menu_popup.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
@@ -16,7 +17,9 @@ class _MyHomePageState extends State<MyHomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Theme.of(context).colorScheme.inversePrimary,
+        actions: const <Widget>[
+          MenuPopup(),
+        ],
       ),
       body: Center(
         child: Column(
@@ -26,7 +29,7 @@ class _MyHomePageState extends State<MyHomePage> {
             // User widget
             GestureDetector(
               onTap: () {
-                FirebaseAuth.instance.currentUser!.isAnonymous ? _showLoginPopup(context) : Container();
+                FirebaseAuth.instance.currentUser!.isAnonymous ? LoginPopup.displayLoginPopup(context) : Container();
               },
               child: Container(
                 width: MediaQuery.sizeOf(context).width * 0.90,
@@ -80,61 +83,6 @@ class _MyHomePageState extends State<MyHomePage> {
           ],
         ),
       ),
-    );
-  }
-
-  void _showLoginPopup(BuildContext context) {
-    TextEditingController emailController = TextEditingController();
-    TextEditingController passwordController = TextEditingController();
-
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(50.0),
-          ),
-          title: const Text("Login"),
-          content: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-
-              // Email textfield
-              TextField(
-                controller: emailController,
-                decoration: const InputDecoration(labelText: 'Email'),
-                keyboardType: TextInputType.emailAddress,
-              ),
-
-              // Password textfield
-              TextField(
-                controller: passwordController,
-                decoration: const InputDecoration(labelText: 'Password'),
-                obscureText: true,
-              ),
-            ],
-          ),
-          actions: [
-
-            // Cancel button
-            TextButton(
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-              child: const Text('Cancel'),
-            ),
-
-            // Login button
-            ElevatedButton(
-              onPressed: () {
-                UserOptions.linkAccountWithAnonymous(emailController.text, passwordController.text);
-                Navigator.of(context).pop();
-              },
-              child: const Text('Login'),
-            ),
-          ],
-        );
-      },
     );
   }
 }
