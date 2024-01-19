@@ -16,16 +16,10 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        actions: const <Widget>[
-          MenuPopup(),
-        ],
-      ),
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: <Widget>[
-
             // User widget
             GestureDetector(
               onTap: () {
@@ -36,50 +30,56 @@ class _MyHomePageState extends State<MyHomePage> {
                 height: MediaQuery.sizeOf(context).height * 0.50,
                 decoration: BoxDecoration(
                   color: Theme.of(context).primaryColor,
-                  borderRadius: BorderRadius.circular(50.0),
+                  borderRadius: BorderRadius.circular(30.0),
                 ),
               ),
             ),
 
-            // Host button
-            SizedBox(
-              width: MediaQuery.sizeOf(context).width * 0.90,
-              height: MediaQuery.sizeOf(context).height * 0.10,
-              child: ElevatedButton(
-                onPressed: () {  
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => const HostPage()),
-                  );
-                },
-                style: ElevatedButton.styleFrom(
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(50.0),
+            // Buttons
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: [
+                // Host button
+                SizedBox(
+                  width: MediaQuery.sizeOf(context).width * 0.425,
+                  height: MediaQuery.sizeOf(context).height * 0.10,
+                  child: ElevatedButton(
+                    onPressed: () {  
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => const HostPage()),
+                      );
+                    },
+                    style: ElevatedButton.styleFrom(
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(30.0),
+                      ),
+                    ),
+                    child: const Text("Host"),
                   ),
                 ),
-                child: const Text("Host"),
-              ),
-            ),
 
-            // Join button
-            SizedBox(
-              width: MediaQuery.sizeOf(context).width * 0.90,
-              height: MediaQuery.sizeOf(context).height * 0.10,
-              child: ElevatedButton(
-                onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => const JoinPage()),
-                  );
-                },
-                style: ElevatedButton.styleFrom(
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(50.0),
+                // Join button
+                SizedBox(
+                  width: MediaQuery.sizeOf(context).width * 0.425,
+                  height: MediaQuery.sizeOf(context).height * 0.10,
+                  child: ElevatedButton(
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => const JoinPage()),
+                      );
+                    },
+                    style: ElevatedButton.styleFrom(
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(30.0),
+                      ),
+                    ),
+                    child: const Text("Join"),
                   ),
-                ),
-                child: const Text("Join"),
-              ),
-            )
+                )
+              ],
+            ),
           ],
         ),
       ),

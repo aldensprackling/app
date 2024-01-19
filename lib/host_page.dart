@@ -26,7 +26,9 @@ class _HostPageState extends State<HostPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Code: $_code"),
+        title: Text(
+          "Code: $_code"
+        ),
       ),
       body: const UserGrid(),
     );
