@@ -1,6 +1,34 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
 class UserOptions {
+  static Future<void> signInUserAnonymously(User? user) async {
+    if (user == null) {
+      try {
+        UserCredential userCredential = await FirebaseAuth.instance.signInAnonymously();
+        user = userCredential.user;
+
+        // Create random username for new anonymous users
+        try {
+          await FirebaseFirestore.instance.collection('anonymous_users').doc(user?.uid).set({
+            'username': 'guest12345',
+          });
+          print('User added to Firestore successfully');
+        } catch (e) {
+          print('Error adding user to Firestore: $e');
+        }
+
+        print('Signed in anonymously: ${user?.uid}');
+      } catch (e) {
+        print('Error signing in anonymously: $e');
+      }
+    } else {
+      DocumentSnapshot snapshot = await FirebaseFirestore.instance.collection('anonymous_users').doc(user.uid).get();
+      print('User is signed in! ${user.uid}');
+      print('Username: ${snapshot['username']}');
+    }
+  }
+
   static Future<void> linkAccountWithAnonymousUser(String email, String password) async {
     try {
       // Get the current user (should be the anonymous user)
@@ -54,7 +82,6 @@ class UserOptions {
     }
   }
 
-  // TODO: add reauthentication method
   static Future<void> deleteUser() async {
     try {
       await FirebaseAuth.instance.currentUser!.delete();

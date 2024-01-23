@@ -1,4 +1,5 @@
 import 'package:app/home_page.dart';
+import 'package:app/user_options.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'firebase_options.dart';
@@ -12,19 +13,7 @@ void main() async {
   FirebaseAuth.instance
   .authStateChanges()
   .listen((User? user) async {
-    if (user == null) {
-      // User is not signed in, sign them in anonymously
-      // They don't have an option
-      try {
-        UserCredential userCredential = await FirebaseAuth.instance.signInAnonymously();
-        user = userCredential.user;
-        print('Signed in anonymously: ${user?.uid}');
-      } catch (e) {
-        print('Error signing in anonymously: $e');
-      }
-    } else {
-      print('User is signed in! ${user.uid}');
-    }
+    UserOptions.signInUserAnonymously(user);
   });
   runApp(const MyApp());
 }

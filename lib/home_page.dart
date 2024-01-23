@@ -1,8 +1,6 @@
 import 'package:app/host_page.dart';
 import 'package:app/join_page.dart';
-import 'package:app/login_popup.dart';
-import 'package:app/menu_popup.dart';
-import 'package:firebase_auth/firebase_auth.dart';
+import 'package:app/user_homepage_widget.dart';
 import 'package:flutter/material.dart';
 
 class MyHomePage extends StatefulWidget {
@@ -16,24 +14,15 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+
+      ),
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: <Widget>[
-            // User widget
-            GestureDetector(
-              onTap: () {
-                FirebaseAuth.instance.currentUser!.isAnonymous ? LoginPopup.displayLoginPopup(context) : Container();
-              },
-              child: Container(
-                width: MediaQuery.sizeOf(context).width * 0.90,
-                height: MediaQuery.sizeOf(context).height * 0.50,
-                decoration: BoxDecoration(
-                  color: Theme.of(context).primaryColor,
-                  borderRadius: BorderRadius.circular(30.0),
-                ),
-              ),
-            ),
+            // User homepage widget
+            const UserHomepageWidget(),
 
             // Buttons
             Row(
@@ -55,7 +44,7 @@ class _MyHomePageState extends State<MyHomePage> {
                         borderRadius: BorderRadius.circular(30.0),
                       ),
                     ),
-                    child: const Text("Host"),
+                    child: const Icon(Icons.group_rounded),
                   ),
                 ),
 
@@ -75,7 +64,7 @@ class _MyHomePageState extends State<MyHomePage> {
                         borderRadius: BorderRadius.circular(30.0),
                       ),
                     ),
-                    child: const Text("Join"),
+                    child: const Icon(Icons.person_add_alt_1_rounded),
                   ),
                 )
               ],
