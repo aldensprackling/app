@@ -1,3 +1,4 @@
+import 'package:app/firestore_options.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
@@ -7,16 +8,7 @@ class UserOptions {
       try {
         UserCredential userCredential = await FirebaseAuth.instance.signInAnonymously();
         user = userCredential.user;
-
-        // Create random username for new anonymous users
-        try {
-          await FirebaseFirestore.instance.collection('anonymous_users').doc(user?.uid).set({
-            'username': 'guest12345',
-          });
-          print('User added to Firestore successfully');
-        } catch (e) {
-          print('Error adding user to Firestore: $e');
-        }
+        FirestoreOptions.setRandomUsernameToUser(user);
 
         print('Signed in anonymously: ${user?.uid}');
       } catch (e) {
