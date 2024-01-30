@@ -1,5 +1,5 @@
 import 'package:app/home_page.dart';
-import 'package:app/user_options.dart';
+import 'package:app/authentication_options.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'firebase_options.dart';
@@ -13,7 +13,7 @@ void main() async {
   FirebaseAuth.instance
   .authStateChanges()
   .listen((User? user) async {
-    UserOptions.signInUserAnonymously(user);
+    AuthenticationOptions.signInUserAnonymously(user);
   });
   runApp(const MyApp());
 }

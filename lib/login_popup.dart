@@ -1,4 +1,4 @@
-import 'package:app/user_options.dart';
+import 'package:app/authentication_options.dart';
 import 'package:flutter/material.dart';
 
 class LoginPopup{
@@ -45,7 +45,7 @@ class LoginPopup{
             // Login button
             ElevatedButton(
               onPressed: () {
-                UserOptions.linkAccountWithAnonymousUser(emailController.text, passwordController.text);
+                AuthenticationOptions.linkAccountWithAnonymousUser(emailController.text, passwordController.text);
                 Navigator.of(context).pop();
               },
               child: const Text('Login'),

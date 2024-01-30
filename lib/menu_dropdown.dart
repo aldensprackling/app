@@ -1,4 +1,4 @@
-import 'package:app/user_options.dart';
+import 'package:app/authentication_options.dart';
 import 'package:flutter/material.dart';
 
 class MenuPopup extends StatelessWidget {
@@ -16,7 +16,7 @@ class MenuPopup extends StatelessWidget {
       ),
       onSelected: (String result) {
         if (result == "signOut") {
-          UserOptions.signOutUser();
+          AuthenticationOptions.signOutUser();
         }
       },
       itemBuilder: (BuildContext context) => <PopupMenuEntry<String>>[

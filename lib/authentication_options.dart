@@ -2,7 +2,7 @@ import 'package:app/firestore_options.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
-class UserOptions {
+class AuthenticationOptions {
   static Future<void> signInUserAnonymously(User? user) async {
     if (user == null) {
       try {
