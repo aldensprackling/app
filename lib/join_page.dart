@@ -9,13 +9,31 @@ class JoinPage extends StatefulWidget {
 }
 
 class _JoinPageState extends State<JoinPage> {
+  TextEditingController codeController = TextEditingController();
+  String code = '';
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Join Page"),
+        title: TextField(
+          controller: codeController,
+          decoration: const InputDecoration(
+            label: Text('Enter code'),
+          ),
+        ),
+        actions: [
+          ElevatedButton(
+            onPressed: () {
+              setState(() {
+                code = codeController.text;
+              });
+            },
+            child: const Text('Submit'),
+          ),
+        ],
       ),
-      body: const UserGrid()
+      body: code == '' ? Container() : UserGrid(code: code),
     );
   }
 }

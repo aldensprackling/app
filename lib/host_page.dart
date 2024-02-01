@@ -1,5 +1,8 @@
-import 'dart:math';
+import 'package:app/firestore_options.dart';
+import 'package:app/home_page.dart';
+import 'package:app/logic.dart';
 import 'package:app/user_grid.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 class HostPage extends StatefulWidget {
@@ -10,27 +13,30 @@ class HostPage extends StatefulWidget {
 }
 
 class _HostPageState extends State<HostPage> {
-  String get _code {
-    final Random random = Random();
-    const String characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
-    String code = '';
-
-    for (int i = 0; i < 4; i++) {
-      code += characters[random.nextInt(characters.length)];
-    }
-
-    return code;
-  }
+  String code = Logic.getRandomRoomCode();
 
   @override
   Widget build(BuildContext context) {
+    FirestoreOptions.createRoom(FirebaseAuth.instance.currentUser, code);
+
     return Scaffold(
       appBar: AppBar(
+        leading: BackButton(
+          onPressed: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => const MyHomePage()),
+            );
+            FirestoreOptions.deleteRoom(code);
+          },
+        ),
         title: Text(
-          "Code: $_code"
+          "Code: $code"
         ),
       ),
-      body: const UserGrid(),
+      body: UserGrid(
+        code: code,
+      ),
     );
   }
 }

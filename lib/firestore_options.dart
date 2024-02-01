@@ -7,9 +7,9 @@ class FirestoreOptions {
       await FirebaseFirestore.instance.collection('users').doc(user?.uid).set({
         'username': 'guest12345',
       });
-      print('User added to Firestore successfully');
+      print('Username added to Firestore successfully');
     } catch (e) {
-      print('Error adding user to Firestore: $e');
+      print('Error adding username to Firestore: $e');
     }
   }
 
@@ -18,17 +18,40 @@ class FirestoreOptions {
       await FirebaseFirestore.instance.collection('users').doc(user?.uid).set({
         'username': username,
       });
-      print('User added to Firestore successfully');
+      print('Username added to Firestore successfully');
     } catch (e) {
-      print('Error adding user to Firestore: $e');
+      print('Error adding username to Firestore: $e');
     }
   }
 
-  static Future<void> addRoom(String roomCode) async {
-
+  static Future<void> createRoom(User? user, String roomCode) async {
+    try {
+      await FirebaseFirestore.instance.collection('rooms').doc(roomCode.toString()).set({
+        'users': [FirebaseFirestore.instance.collection('users').doc(user?.uid)],
+      });
+      print('Room added to Firestore successfully');
+    } catch (e) {
+      print('Error adding room to Firestore: $e');
+    }
   }
 
-  static Future<void> addUserToRoom(User? user) async {
+  static Future<void> deleteRoom(String roomCode) async {
+    try {
+      await FirebaseFirestore.instance.collection('rooms').doc(roomCode.toString()).delete();
+      print('Room deleted from Firestore successfully');
+    } catch (e) {
+      print('Error deleting room from Firestore: $e');
+    }
+  }
 
+  static Future<void> addUserToRoom(User? user, String roomCode) async {
+    try {
+      await FirebaseFirestore.instance.collection('rooms').doc(roomCode.toString()).update({
+        'references': FieldValue.arrayUnion([FirebaseFirestore.instance.collection('users').doc(user?.uid)]),
+      });
+      print('Added user to room in Firestore successfully');
+    } catch (e) {
+      print('Error adding user to room in Firestore: $e');
+    }
   }
 }
