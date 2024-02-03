@@ -2,9 +2,9 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
 class UserGrid extends StatefulWidget {
-  final String code;
+  final String roomCode;
 
-  const UserGrid({required this.code, super.key});
+  const UserGrid({required this.roomCode, super.key});
 
   @override
   State<UserGrid> createState() => _UserGridState();
@@ -14,7 +14,7 @@ class _UserGridState extends State<UserGrid> {
   @override
   Widget build(BuildContext context) {
     return StreamBuilder<DocumentSnapshot>(
-      stream: FirebaseFirestore.instance.collection('rooms').doc(widget.code).snapshots(),
+      stream: FirebaseFirestore.instance.collection('rooms').doc(widget.roomCode).snapshots(),
       builder: (BuildContext context, AsyncSnapshot<DocumentSnapshot> snapshot) {
         if (snapshot.hasError) {
           return const Text('Error getting room snapshot');

@@ -35,7 +35,7 @@ class _HostPageState extends State<HostPage> {
         ),
       ),
       body: UserGrid(
-        code: code,
+        roomCode: code,
       ),
     );
   }
