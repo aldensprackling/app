@@ -1,9 +1,9 @@
 import 'package:app/firestore_options.dart';
 import 'package:app/home_page.dart';
 import 'package:app/user_grid.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:pinput/pinput.dart';
 
 class JoinPage extends StatefulWidget {
   const JoinPage({super.key});
@@ -13,45 +13,18 @@ class JoinPage extends StatefulWidget {
 }
 
 class _JoinPageState extends State<JoinPage> {
-  TextEditingController codeController = TextEditingController();
+  TextEditingController textfieldController = TextEditingController();
+  FocusNode textfieldFocusNode = FocusNode();
   bool isFourCharacters = false;
   bool roomExists = false;
   bool loading = false;
   bool userAdded = false;
-
-  @override
-  void initState() {
-    super.initState();
-    codeController.addListener(_checkTextField);
-  }
+  String code = '';
 
   @override
   void dispose() {
-    codeController.dispose();
+    textfieldController.dispose();
     super.dispose();
-  }
-
-  void _checkTextField() {
-    setState(() {
-      isFourCharacters = codeController.text.length == 4;
-      roomExists = false;
-      if (isFourCharacters) {
-        loading = true;
-        FirestoreOptions.doesRoomExist(codeController.text).then((doesRoomExist) {
-          setState(() {
-            loading = false;
-            roomExists = doesRoomExist;
-            if (roomExists) {
-              FirestoreOptions.addUserToRoom(FirebaseAuth.instance.currentUser, codeController.text).then((wasUserAdded) {
-                setState(() {
-                  userAdded = wasUserAdded;
-                });
-              });
-            }
-          });
-        });
-      }
-    });
   }
 
   @override
@@ -60,29 +33,53 @@ class _JoinPageState extends State<JoinPage> {
       appBar: AppBar(
         leading: BackButton(
           onPressed: () {
-            Navigator.push(
+            Navigator.pop(
               context,
               MaterialPageRoute(builder: (context) => const MyHomePage()),
             );
             if (userAdded && roomExists) {
-              FirestoreOptions.deleteUserFromRoom(FirebaseAuth.instance.currentUser, codeController.text);
+              FirestoreOptions.deleteUserFromRoom(FirebaseAuth.instance.currentUser, code);
             }
           },
         ),
-        title: TextField(
-          autocorrect: false,
-          enableSuggestions: false,
+        title: Pinput(
+          autofocus: true,
+          focusNode: textfieldFocusNode,
+          controller: textfieldController,
           readOnly: isFourCharacters,
-          showCursor: !isFourCharacters,
+          enableSuggestions: false,
           textCapitalization: TextCapitalization.characters,
-          controller: codeController,
-          maxLength: 4,
-          decoration: const InputDecoration(
-            labelText: 'Enter code',
-          ),
+          length: 4,
+          onChanged: (text) {
+            if (text.length == 4) {
+              setState(() {
+                loading = true;
+                isFourCharacters = true;
+              });
+              FirestoreOptions.doesRoomExist(text).then((doesRoomExist) {
+                setState(() {
+                  code = text;
+                  roomExists = doesRoomExist;
+                  if (roomExists) {
+                    FirestoreOptions.addUserToRoom(FirebaseAuth.instance.currentUser, text).then((wasUserAdded) {
+                      setState(() {
+                        loading = false;
+                        userAdded = wasUserAdded;
+                      });
+                    });
+                  } else {
+                    textfieldController.clear();
+                    isFourCharacters = false;
+                    loading = false;
+                    textfieldFocusNode.requestFocus();
+                  }
+                });
+              });
+            }
+          },
         ),
       ),
-      body: roomExists ? UserGrid(roomCode: codeController.text) : Container(),
+      body: roomExists ? UserGrid(roomCode: code) : Container(),
     );
   }
 }

@@ -23,7 +23,7 @@ class _HostPageState extends State<HostPage> {
       appBar: AppBar(
         leading: BackButton(
           onPressed: () {
-            Navigator.push(
+            Navigator.pop(
               context,
               MaterialPageRoute(builder: (context) => const MyHomePage()),
             );
